@@ -1,5 +1,23 @@
 # Emmet-vim
 
+This version adds two new functions to standard emmet-vim:
+1. Delete Surrounding Tags:
+```html
+Before:
+<div>Some text.</div>
+
+After <C-y>l:
+Some text.
+```
+
+2. Delete Inner HTML:
+```html
+Before:
+<div>Some text.</div>
+
+After <C-y>l:
+<div></div>
+```
 
 [![Build Status](https://travis-ci.org/mattn/emmet-vim.svg?branch=master)](https://travis-ci.org/mattn/emmet-vim)
 
@@ -151,4 +169,3 @@ You can change the **path** to your **snippets_custom.json** according to your p
 ### A Chinese translation of the tutorial:
 
 * <http://www.zfanw.com/blog/zencoding-vim-tutorial-chinese.html>
-
