@@ -951,6 +951,7 @@ function! emmet#lang#html#deleteSurroundingTags() abort
     call setpos('.', [0, original_curpos_line, original_curpos_column + 1, 0])
   endif
 
+  echo "this is a test echo"
   " Keep going left until we find a tag that is a start tag and tag_count is zero.
   " If tag_count is not zero, then the start tag belongs to a differnt end tag and
   " those are not the desired tag pairs to be deleted.
