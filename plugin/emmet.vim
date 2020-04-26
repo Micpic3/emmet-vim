@@ -126,8 +126,6 @@ function! s:install_plugin(mode, buffer)
   \ {'mode': 'n', 'var': 'user_emmet_togglecomment_key', 'key': '/', 'plug': 'emmet-toggle-comment', 'func': ':call emmet#toggleComment()<cr>'},
   \ {'mode': 'i', 'var': 'user_emmet_splitjointag_key', 'key': 'j', 'plug': 'emmet-split-join-tag', 'func': '<esc>:call emmet#splitJoinTag()<cr>'},
   \ {'mode': 'n', 'var': 'user_emmet_splitjointag_key', 'key': 'j', 'plug': 'emmet-split-join-tag', 'func': ':call emmet#splitJoinTag()<cr>'},
-  \ {'mode': 'i', 'var': 'user_emmet_splitjointag_key_mike', 'key': 'l', 'plug': 'emmet-split-join-tag-mike', 'func': '<esc>:call emmet#splitJoinTagMike()<cr>'},
-  \ {'mode': 'n', 'var': 'user_emmet_splitjointag_key_mike', 'key': 'l', 'plug': 'emmet-split-join-tag-mike', 'func': ':call emmet#splitJoinTagMike()<cr>'},
   \ {'mode': 'i', 'var': 'user_emmet_removetag_key', 'key': 'k', 'plug': 'emmet-remove-tag', 'func': '<c-r>=emmet#util#closePopup()<cr><c-r>=emmet#removeTag()<cr>'},
   \ {'mode': 'n', 'var': 'user_emmet_removetag_key', 'key': 'k', 'plug': 'emmet-remove-tag', 'func': ':call emmet#removeTag()<cr>'},
   \ {'mode': 'i', 'var': 'user_emmet_anchorizeurl_key', 'key': 'a', 'plug': 'emmet-anchorize-url', 'func': '<c-r>=emmet#util#closePopup()<cr><c-r>=emmet#anchorizeURL(0)<cr>'},
@@ -137,6 +135,8 @@ function! s:install_plugin(mode, buffer)
   \ {'mode': 'i', 'var': 'user_emmet_mergelines_key', 'key': 'm', 'plug': 'emmet-merge-lines', 'func': '<c-r>=emmet#util#closePopup()<cr><c-r>=emmet#mergeLines()<cr>'},
   \ {'mode': 'n', 'var': 'user_emmet_mergelines_key', 'key': 'm', 'plug': 'emmet-merge-lines', 'func': ':call emmet#mergeLines()<cr>'},
   \ {'mode': 'v', 'var': 'user_emmet_codepretty_key', 'key': 'c', 'plug': 'emmet-code-pretty', 'func': ':call emmet#codePretty()<cr>'},
+  \ {'mode': 'i', 'var': 'user_emmet_deletesurroundingtags_key', 'key': 'l', 'plug': 'emmet-delete-surrounding-tags', 'func': '<esc>:call emmet#deleteSurroundingTags()<cr>'},
+  \ {'mode': 'n', 'var': 'user_emmet_deletesurroundingtags_key', 'key': 'l', 'plug': 'emmet-delete-surrounding-tags', 'func': ':call emmet#deleteSurroundingTags()<cr>'},
   \]
 
   let only_plug = get(g:, 'emmet_install_only_plug', 0)

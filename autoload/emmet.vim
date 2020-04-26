@@ -835,9 +835,9 @@ function! emmet#splitJoinTag() abort
   return emmet#lang#{emmet#lang#type(type)}#splitJoinTag()
 endfunction
 
-function! emmet#splitJoinTagMike() abort
+function! emmet#deleteSurroundingTags() abort
   let type = emmet#getFileType()
-  return emmet#lang#{emmet#lang#type(type)}#splitJoinTagMike()
+  return emmet#lang#{emmet#lang#type(type)}#deleteSurroundingTags()
 endfunction
 
 function! emmet#mergeLines() range abort

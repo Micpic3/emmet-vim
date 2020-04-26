@@ -33,6 +33,7 @@ Tutorial               |emmet-tutorial|
  15. Make quoted text from URL      |emmet-quoted-text-url|          |<C-y>A|
  16. Code pretty                    |emmet-code-pretty|              |<C-y>c|
  17. Lorem ipsum                    |emmet-lorem-ipsum|
+ 18. Delete surrounding tags        |emmet-delete-surrounding-tags|  |<C-y>l|
 HTML expression syntax |emmet-html-expression-syntax|
   1. Elements                       |emmet-html-syntax-elements|
   2. Nesting operators              |emmet-html-syntax-nesting-operators|
@@ -326,6 +327,7 @@ You should copy this section and create new buffer, paste and write as
   <div class="foo">
   </div>
 <
+
 13. Toggle comment                             *emmet-toggle-comment* *<C-y>/*
 
   Move cursor to block
@@ -430,6 +432,20 @@ You should copy this section and create new buffer, paste and write as
       Elit libero id.
   </div>
 <
+
+18 Delete Surroung tags                             *emmet-delete-surrounding-tags* *<C-y>l*
+
+  To delete surround tags in insert or normal mode, type '<C-y>l'.
+>
+  <div class="foo">
+      cursor is here
+  </div>
+<
+turns to:
+>
+cursor is here
+<
+
 ==============================================================================
 HTML EXPRESSION SYNTAX                          *emmet-html-expression-syntax*
 
@@ -1288,6 +1304,7 @@ CUSTOMIZE                                                    *emmet-customize*
   let g:user_emmet_anchorizesummary_key = '<C-y>A'
   let g:user_emmet_mergelines_key = '<C-y>m'
   let g:user_emmet_codepretty_key = '<C-y>c'
+  let g:user_emmet_deletesurroundingtags_key = '<C-y>l'
 <
   Or you can use following <plug> mappings:
 >
@@ -1306,6 +1323,7 @@ CUSTOMIZE                                                    *emmet-customize*
   imap   <C-y>A   <plug>(emmet-anchorize-summary)
   imap   <C-y>m   <plug>(emmet-merge-lines)
   imap   <C-y>c   <plug>(emmet-code-pretty)
+  imap   <C-y>j   <plug>(emmet-delete-surrounding-tags)
 <
   You can make the mapping affected only for a filetype you want.
 >
