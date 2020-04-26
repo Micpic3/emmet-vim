@@ -959,7 +959,6 @@ function! emmet#lang#html#deleteSurroundingTags() abort
     let tag_pos = searchpos(mx, 'bW')
     let tag_line = tag_pos[0]
     let tag_column = tag_pos[1]
-    let tag_column_end = tag_column + len(tag_string) - 1
 
     " No tag found.
     if tag_line ==# 0 && tag_line ==# 0
@@ -969,6 +968,7 @@ function! emmet#lang#html#deleteSurroundingTags() abort
     endif
 
     let tag_string = matchstr(getline(tag_line)[tag_column-1:], mx)
+    let tag_column_end = tag_column + len(tag_string) - 1
     let tag_block = [tag_pos, [tag_line, tag_column_end]]
 
     " single tag
