@@ -963,7 +963,19 @@ function! emmet#lang#html#deleteInnerHTML() abort
     let end_tag_line_start = end_tag_block[0][0]
     let end_tag_column_start = end_tag_block[0][1]
 
-    let inner_html_block = [[start_tag_line_end, start_tag_column_end + 1], [end_tag_line_start, end_tag_column_start - 1]]
+    let inner_html_block_end_column =  end_tag_column_start - 1
+    let inner_html_block_end_line =  end_tag_line_start
+
+    " Fix edge case where column can't be below 1
+    if inner_html_block_end_column ==# 0
+      let new_line = getline(inner_html_block_end_line - 1)
+      let new_column = len(new_line)
+      let inner_html_block_end_column = new_column
+      let inner_html_block_end_line = inner_html_block_end_line - 1
+    endif
+
+    let inner_html_block = [[start_tag_line_end, start_tag_column_end + 1], [inner_html_block_end_line, inner_html_block_end_column]]
+
     " Do the end tag first, because if we do the start tag first,
     " it could change the spot of the end tag potentially, I think.
     call emmet#util#setContent(inner_html_block, '')
