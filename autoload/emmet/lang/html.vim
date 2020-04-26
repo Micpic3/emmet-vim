@@ -968,7 +968,7 @@ function! emmet#lang#html#deleteSurroundingTags() abort
       continue
 
     " start tag
-    elseif tag_string[0] ==# "<" && tag_string[-1] ==# ">"
+    elseif tag_string[0] ==# "<" && tag_string[-1:] ==# ">"
       " We found the head
       if tag_count ==# 0
         let start_tag_pos = tag_pos
@@ -978,6 +978,7 @@ function! emmet#lang#html#deleteSurroundingTags() abort
         continue
       endif
     else
+      echo tag_string
       shouldnt_get_here ==# 1
     endif
   endwhile
