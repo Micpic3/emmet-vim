@@ -34,6 +34,7 @@ Tutorial               |emmet-tutorial|
  16. Code pretty                    |emmet-code-pretty|              |<C-y>c|
  17. Lorem ipsum                    |emmet-lorem-ipsum|
  18. Delete surrounding tags        |emmet-delete-surrounding-tags|  |<C-y>l|
+ 19. Delete inner HTML              |emmet-delete-inner-html|        |<C-y>h|
 HTML expression syntax |emmet-html-expression-syntax|
   1. Elements                       |emmet-html-syntax-elements|
   2. Nesting operators              |emmet-html-syntax-nesting-operators|
@@ -444,6 +445,20 @@ You should copy this section and create new buffer, paste and write as
 turns to:
 >
 cursor is here
+<
+
+18 Delete Inner HTML                             *emmet-delete-inner-html* *<C-y>h*
+
+  To delete the inner html '<C-y>h'.
+>
+  <div class="foo">
+      cursor is here
+  </div>
+<
+turns to:
+>
+  <div class="foo">
+  </div>
 <
 
 ==============================================================================
@@ -1305,6 +1320,7 @@ CUSTOMIZE                                                    *emmet-customize*
   let g:user_emmet_mergelines_key = '<C-y>m'
   let g:user_emmet_codepretty_key = '<C-y>c'
   let g:user_emmet_deletesurroundingtags_key = '<C-y>l'
+  let g:user_emmet_deleteinnerhtml_key = '<C-y>h'
 <
   Or you can use following <plug> mappings:
 >
@@ -1324,6 +1340,7 @@ CUSTOMIZE                                                    *emmet-customize*
   imap   <C-y>m   <plug>(emmet-merge-lines)
   imap   <C-y>c   <plug>(emmet-code-pretty)
   imap   <C-y>j   <plug>(emmet-delete-surrounding-tags)
+  imap   <C-y>h   <plug>(emmet-delete-inner-html)
 <
   You can make the mapping affected only for a filetype you want.
 >

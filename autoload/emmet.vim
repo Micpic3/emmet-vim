@@ -840,6 +840,11 @@ function! emmet#deleteSurroundingTags() abort
   return emmet#lang#{emmet#lang#type(type)}#deleteSurroundingTags()
 endfunction
 
+function! emmet#deleteInnerHTML() abort
+  let type = emmet#getFileType()
+  return emmet#lang#{emmet#lang#type(type)}#deleteInnerHTML()
+endfunction
+
 function! emmet#mergeLines() range abort
   let lines = join(map(getline(a:firstline, a:lastline), 'matchstr(v:val, "^\\s*\\zs.*\\ze\\s*$")'), '')
   let indent = substitute(getline('.'), '^\(\s*\).*', '\1', '')

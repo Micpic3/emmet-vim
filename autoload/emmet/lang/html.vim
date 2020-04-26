@@ -938,96 +938,36 @@ endfunction
 
 function! emmet#lang#html#deleteSurroundingTags() abort
 
-  let start_tag_pos = []
-  let tag_count = 0
-  let mx = '<\(/\{0,1}[a-zA-Z][-a-zA-Z0-9:_\-]*\)\%(\%(\s[a-zA-Z][a-zA-Z0-9]\+=\%([^"'' \t]\+\|"[^"]\{-}"\|''[^'']\{-}''\)\s*\)*\)\s*\%(/\{0,1}\)>'
+  start_and_end_tag_blocks = emmet#util#getSurroundingTagBlocks()
+  start_tag_block = start_and_end_tag_blocks[0]
+  end_tag_block = start_and_end_tag_blocks[0]
 
-  let original_curpos = emmet#util#getcurpos()
-  let original_curpos_line = original_curpos[1]
-  let original_curpos_column = original_curpos[2]
-
-  let character_under_cursor = matchstr(getline('.'), '\%' . col('.') . 'c.')
-  if character_under_cursor ==# "<"
-    call setpos('.', [0, original_curpos_line, original_curpos_column + 1, 0])
+  if start_tag_block !=# [[0,0],[0,0]] && end_tag_block !=# [[0,0],[0,0]]
+    " Do the end tag first, because if we do the start tag first,
+    " it could change the spot of the end tag potentially, I think.
+    call emmet#util#setContent(end_tag_block, '')
+    call emmet#util#setContent(start_tag_block, '')
   endif
+endfunction
 
-  " Keep going left until we find a tag that is a start tag and tag_count is zero.
-  " If tag_count is not zero, then the start tag belongs to a differnt end tag and
-  " those are not the desired tag pairs to be deleted.
-  while 1
-    " go to nearest tag to the left.
-    let tag_pos = searchpos(mx, 'bW')
-    let tag_line = tag_pos[0]
-    let tag_column = tag_pos[1]
+function! emmet#lang#html#deleteInnerHTML() abort
 
-    " No tag found.
-    if tag_line ==# 0 && tag_line ==# 0
-      echo "No start tag found."
-      call setpos('.', original_curpos)
-      return
-    endif
+  start_and_end_tag_blocks = emmet#util#getSurroundingTagBlocks()
+  start_tag_block = start_and_end_tag_blocks[0]
+  end_tag_block = start_and_end_tag_blocks[0]
 
-    let tag_string = matchstr(getline(tag_line)[tag_column-1:], mx)
-    let tag_column_end = tag_column + len(tag_string) - 1
-    let tag_block = [tag_pos, [tag_line, tag_column_end]]
+  if start_tag_block !=# [[0,0],[0,0]] && end_tag_block !=# [[0,0],[0,0]]
+    let start_tag_line_end = start_tag_block[1][0]
+    let start_tag_column_end = start_tag_block[1][1]
 
-    " single tag
-    if tag_string[-2:] ==# '/>'
-      continue
+    let end_tag_line_start = end_tag_block[0][0]
+    let end_tag_column_start = end_tag_block[0][1]
 
-    " end tag
-    elseif tag_string[:1] ==# '</'
-      " Don't consider the end tag that the cursor hovers over.
-      " This allows us to delete the start and end tag the cursor
-      " is on. We only need to check to
-
-      if original_curpos_line ==# tag_line && original_curpos_column <= tag_column_end && original_curpos_column >= tag_column
-        continue
-      endif
-      let tag_count = tag_count - 1
-      continue
-
-    " start tag
-    elseif tag_string[0] ==# "<" && tag_string[-1:] ==# ">"
-      " We found the head
-      if tag_count ==# 0
-        let start_tag_pos = tag_pos
-        break
-      else
-        let tag_count = tag_count + 1
-        continue
-      endif
-    else
-      echo tag_string
-      call setpos('.', original_curpos)
-      shouldnt_get_here ==# 1
-    endif
-  endwhile
-
-  let start_tag_line = start_tag_pos[0]
-  let start_tag_column = start_tag_pos[1]
-  let start_tag_string = matchstr(getline(start_tag_line)[start_tag_column-1:], mx)
-  let start_tag_block = [start_tag_pos, [start_tag_pos[0], start_tag_pos[1] + len(start_tag_string) - 1]]
-  let start_tag_name = substitute(start_tag_string, '^<\(/\{0,1}[a-zA-Z][a-zA-Z0-9:_\-]*\).*$', '\1', '')
-
-  let end_tag_pos = searchpairpos('<'. start_tag_name . '[^/>]*>', '', '</' . start_tag_name . '>', 'W')
-  let end_tag_line = end_tag_pos[0]
-  let end_tag_column = end_tag_pos[1]
-  let end_tag_string = matchstr(getline(end_tag_line)[end_tag_column-1:], mx)
-  let end_tag_block = [end_tag_pos, [end_tag_pos[0], end_tag_pos[1] + len(end_tag_string) - 1]]
-
-  " no end tag was found, so do nothing.
-  if end_tag_pos == [0, 0]
-    echo "No end tag found."
-    call setpos('.', original_curpos)
-    return
+    let inner_html_block = [[start_tag_line_end, start_tag_column_end + 1], [end_tag_line_start, end_tag_column_start - 1]]
+    " Do the end tag first, because if we do the start tag first,
+    " it could change the spot of the end tag potentially, I think.
+    call emmet#util#setContent(inner_html_block, '')
   endif
-
-  " Do the end tag first, because if we do the start tag first,
-  " it could change the spot of the end tag potentially, I think.
-  call emmet#util#setContent(end_tag_block, '')
-  call emmet#util#setContent(start_tag_block, '')
-  return
 endfunction
 
 function! emmet#lang#html#removeTag() abort
