@@ -959,6 +959,7 @@ function! emmet#lang#html#deleteSurroundingTags() abort
     let tag_pos = searchpos(mx, 'bW')
     let tag_line = tag_pos[0]
     let tag_column = tag_pos[1]
+    let tag_column_end = tag_column + len(tag_string) - 1
 
     " No tag found.
     if tag_line ==# 0 && tag_line ==# 0
@@ -968,7 +969,7 @@ function! emmet#lang#html#deleteSurroundingTags() abort
     endif
 
     let tag_string = matchstr(getline(tag_line)[tag_column-1:], mx)
-    let tag_block = [tag_pos, [tag_pos[0], tag_pos[1] + len(tag_string) - 1]]
+    let tag_block = [tag_pos, [tag_line, tag_column_end]]
 
     " single tag
     if tag_string[-2:] ==# '/>'
@@ -976,6 +977,10 @@ function! emmet#lang#html#deleteSurroundingTags() abort
 
     " end tag
     elseif tag_string[:1] ==# '</'
+      " Don't consider the end tag that the cursor hovers over.
+      " This allows us to delete the start and end tag the cursor
+      " is on. We only need to check to
+      if original_curpos_line ==# tag_line && original_curpos_column <= tag_column_end && original_curpos >= tag_column
       let tag_count = tag_count - 1
       continue
 
