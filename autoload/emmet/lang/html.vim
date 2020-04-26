@@ -961,7 +961,7 @@ function! emmet#lang#html#deleteSurroundingTags() abort
     let tag_block = [tag_pos, [tag_line, tag_column + len(tag_string) - 1]]
 
     " We found a single tag ie. '<script />'.
-    if content[-2:] ==# '/>'
+    if tag_string[-2:] ==# '/>'
       return
 
     " This tag is the end tag.  ie. '</div>'
