@@ -942,6 +942,15 @@ function! emmet#lang#html#deleteSurroundingTags() abort
   let tag_count = 0
   let mx = '<\(/\{0,1}[a-zA-Z][-a-zA-Z0-9:_\-]*\)\%(\%(\s[a-zA-Z][a-zA-Z0-9]\+=\%([^"'' \t]\+\|"[^"]\{-}"\|''[^'']\{-}''\)\s*\)*\)\s*\%(/\{0,1}\)>'
 
+  let original_curpos = emmet#util#getcurpos()
+  let original_curpos_line = original_curpos[0]
+  let original_curpos_column = original_curpos[1]
+
+  let character_under_cursor = matchstr(getline('.'), '\%' . col('.') . 'c.')
+  if character_under_cursor ==# "<"
+    call setpos('.', [0, original_curpos_line, original_curpos_column + 1, 0])
+  endif
+
   " Keep going left until we find a tag that is a start tag and tag_count is zero.
   " If tag_count is not zero, then the start tag belongs to a differnt end tag and
   " those are not the desired tag pairs to be deleted.
@@ -953,10 +962,12 @@ function! emmet#lang#html#deleteSurroundingTags() abort
 
     " No tag found.
     if tag_line ==# 0 && tag_line ==# 0
+      call setpos('.', original_curpos)
       return
     endif
 
     let tag_string = matchstr(getline(tag_line)[tag_column-1:], mx)
+    let tag_block = [tag_pos, [tag_pos[0], tag_pos[1] + len(tag_string) - 1]]
 
     " single tag
     if tag_string[-2:] ==# '/>'
@@ -979,6 +990,7 @@ function! emmet#lang#html#deleteSurroundingTags() abort
       endif
     else
       echo tag_string
+      call setpos('.', original_curpos)
       shouldnt_get_here ==# 1
     endif
   endwhile
@@ -997,6 +1009,7 @@ function! emmet#lang#html#deleteSurroundingTags() abort
 
   " no end tag was found, so do nothing.
   if end_tag_pos == [0, 0]
+    call setpos('.', original_curpos)
     return
   endif
 
