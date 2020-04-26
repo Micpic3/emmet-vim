@@ -501,3 +501,4 @@ function! emmet#util#getSurroundingTagBlocks() abort
   endif
 
   return [start_tag_block, end_tag_block]
+endfunction
