@@ -942,6 +942,7 @@ function! emmet#lang#html#deleteSurroundingTags() abort
 
   let start_tag_block = []
   let end_tag_block = []
+  let end_tag_pos = []
 
   let old_curpos = getpos('.')[1:2]
 
@@ -968,6 +969,7 @@ function! emmet#lang#html#deleteSurroundingTags() abort
   " This tag is the end tag.  ie. '</div>'
   if tag_name[0] ==# '/'
     let end_tag_block = tag_block
+    let end_tag_pos = tag_pos
     let end_tag_name = tag_name
 
     let start_tag_pos = searchpos('<' . end_tag_name[1:] . '[^a-zA-Z0-9]', 'bcnW')
