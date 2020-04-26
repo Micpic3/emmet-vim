@@ -15,7 +15,7 @@ Some text.
 Before:
 <div>Some text.</div>
 
-After <C-y>l:
+After <C-y>h:
 <div></div>
 ```
 
