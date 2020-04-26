@@ -126,6 +126,8 @@ function! s:install_plugin(mode, buffer)
   \ {'mode': 'n', 'var': 'user_emmet_togglecomment_key', 'key': '/', 'plug': 'emmet-toggle-comment', 'func': ':call emmet#toggleComment()<cr>'},
   \ {'mode': 'i', 'var': 'user_emmet_splitjointag_key', 'key': 'j', 'plug': 'emmet-split-join-tag', 'func': '<esc>:call emmet#splitJoinTag()<cr>'},
   \ {'mode': 'n', 'var': 'user_emmet_splitjointag_key', 'key': 'j', 'plug': 'emmet-split-join-tag', 'func': ':call emmet#splitJoinTag()<cr>'},
+  \ {'mode': 'i', 'var': 'user_emmet_splitjointag_key_mike', 'key': 'l', 'plug': 'emmet-split-join-tag-mike', 'func': '<esc>:call emmet#splitJoinTagMike()<cr>'},
+  \ {'mode': 'n', 'var': 'user_emmet_splitjointag_key_mike', 'key': 'l', 'plug': 'emmet-split-join-tag-mike', 'func': ':call emmet#splitJoinTagMike()<cr>'},
   \ {'mode': 'i', 'var': 'user_emmet_removetag_key', 'key': 'k', 'plug': 'emmet-remove-tag', 'func': '<c-r>=emmet#util#closePopup()<cr><c-r>=emmet#removeTag()<cr>'},
   \ {'mode': 'n', 'var': 'user_emmet_removetag_key', 'key': 'k', 'plug': 'emmet-remove-tag', 'func': ':call emmet#removeTag()<cr>'},
   \ {'mode': 'i', 'var': 'user_emmet_anchorizeurl_key', 'key': 'a', 'plug': 'emmet-anchorize-url', 'func': '<c-r>=emmet#util#closePopup()<cr><c-r>=emmet#anchorizeURL(0)<cr>'},

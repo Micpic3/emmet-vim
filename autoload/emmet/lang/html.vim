@@ -149,7 +149,7 @@ function! emmet#lang#html#parseIntoTree(abbr, type) abort
         let tag_name = 'span'
       elseif len(custom) == 0
         let tag_name = 'div'
-      elseif len(custom) != 0 && multiplier > 1	
+      elseif len(custom) != 0 && multiplier > 1
         let tag_name = 'div'
       else
         let tag_name = custom
@@ -891,6 +891,52 @@ function! emmet#lang#html#moveNextPrev(flag) abort
 endfunction
 
 function! emmet#lang#html#splitJoinTag() abort
+  let curpos = emmet#util#getcurpos()
+  let mx = '<\(/\{0,1}[a-zA-Z][-a-zA-Z0-9:_\-]*\)\%(\%(\s[a-zA-Z][a-zA-Z0-9]\+=\%([^"'' \t]\+\|"[^"]\{-}"\|''[^'']\{-}''\)\s*\)*\)\s*\%(/\{0,1}\)>'
+  while 1
+    let old = getpos('.')[1:2]
+    let pos1 = searchpos(mx, 'bcnW')
+    let content = matchstr(getline(pos1[0])[pos1[1]-1:], mx)
+    let tag_name = substitute(content, '^<\(/\{0,1}[a-zA-Z][a-zA-Z0-9:_\-]*\).*$', '\1', '')
+    let block = [pos1, [pos1[0], pos1[1] + len(content) - 1]]
+    if content[-2:] ==# '/>' && emmet#util#cursorInRegion(block)
+      let content = substitute(content[:-3], '\s*$', '', '')  . '></' . tag_name . '>'
+      call emmet#util#setContent(block, content)
+      call setpos('.', [0, block[0][0], block[0][1], 0])
+      return
+    endif
+    if tag_name[0] ==# '/'
+      let pos1 = searchpos('<' . tag_name[1:] . '[^a-zA-Z0-9]', 'bcnW')
+      call setpos('.', [0, pos1[0], pos1[1], 0])
+      let pos2 = searchpairpos('<'. tag_name[1:] . '\>[^/>]*>', '', '</' . tag_name[1:] . '>', 'W')
+    else
+      let pos2 = searchpairpos('<'. tag_name . '[^/>]*>', '', '</' . tag_name . '>', 'W')
+    endif
+    if pos2 == [0, 0]
+      return
+    endif
+    let pos2 = searchpos('>', 'neW')
+    let block = [pos1, pos2]
+    if emmet#util#pointInRegion(curpos[1:2], block)
+      let content = matchstr(content, mx)[:-2] . ' />'
+      call emmet#util#setContent(block, content)
+      call setpos('.', [0, block[0][0], block[0][1], 0])
+      return
+    endif
+    if block[0][0] > 0
+      call setpos('.', [0, block[0][0]-1, block[0][1], 0])
+    else
+      call setpos('.', curpos)
+      return
+    endif
+    if pos1 == old
+      call setpos('.', curpos)
+      return
+    endif
+  endwhile
+endfunction
+
+function! emmet#lang#html#splitJoinTagMike() abort
   let curpos = emmet#util#getcurpos()
   let mx = '<\(/\{0,1}[a-zA-Z][-a-zA-Z0-9:_\-]*\)\%(\%(\s[a-zA-Z][a-zA-Z0-9]\+=\%([^"'' \t]\+\|"[^"]\{-}"\|''[^'']\{-}''\)\s*\)*\)\s*\%(/\{0,1}\)>'
   while 1
