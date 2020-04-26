@@ -947,7 +947,7 @@ function! emmet#lang#html#deleteSurroundingTags() abort
   " those are not the desired tag pairs to be deleted.
   while 1
     " go to nearest tag to the left.
-    let tag_pos = searchpos(mx, 'bcW')
+    let tag_pos = searchpos(mx, 'bW')
     let tag_line = tag_pos[0]
     let tag_column = tag_pos[1]
 
