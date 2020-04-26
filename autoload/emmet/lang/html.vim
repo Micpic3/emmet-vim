@@ -981,14 +981,7 @@ function! emmet#lang#html#deleteSurroundingTags() abort
       " This allows us to delete the start and end tag the cursor
       " is on. We only need to check to
 
-      echo original_curpos_line
-      echo tag_line
-      echo original_curpos_column
-      echo tag_column_end
-      echo original_curpos
-      echo tag_column
-
-      if original_curpos_line ==# tag_line && original_curpos_column <= tag_column_end && original_curpos >= tag_column
+      if original_curpos_line ==# tag_line && original_curpos_column <= tag_column_end && original_curpos_column >= tag_column
         continue
       endif
       let tag_count = tag_count - 1
