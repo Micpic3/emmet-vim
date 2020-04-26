@@ -940,7 +940,7 @@ function! emmet#lang#html#deleteSurroundingTags() abort
 
   let start_and_end_tag_blocks = emmet#util#getSurroundingTagBlocks()
   let start_tag_block = start_and_end_tag_blocks[0]
-  let end_tag_block = start_and_end_tag_blocks[0]
+  let end_tag_block = start_and_end_tag_blocks[1]
 
   if start_tag_block !=# [[0,0],[0,0]] && end_tag_block !=# [[0,0],[0,0]]
     " Do the end tag first, because if we do the start tag first,
@@ -954,7 +954,7 @@ function! emmet#lang#html#deleteInnerHTML() abort
 
   let start_and_end_tag_blocks = emmet#util#getSurroundingTagBlocks()
   let start_tag_block = start_and_end_tag_blocks[0]
-  let end_tag_block = start_and_end_tag_blocks[0]
+  let end_tag_block = start_and_end_tag_blocks[1]
 
   if start_tag_block !=# [[0,0],[0,0]] && end_tag_block !=# [[0,0],[0,0]]
     let start_tag_line_end = start_tag_block[1][0]
