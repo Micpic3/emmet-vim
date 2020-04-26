@@ -963,6 +963,7 @@ function! emmet#lang#html#deleteSurroundingTags() abort
     " We found a single tag ie. '<script />'.
     if tag_string[-2:] ==# '/>'
       return
+    endif
 
     " This tag is the end tag.  ie. '</div>'
     if tag_name[0] ==# '/'
@@ -985,8 +986,8 @@ function! emmet#lang#html#deleteSurroundingTags() abort
       let end_tag_column = end_tag_pos[1]
       let end_tag_string = matchstr(getline(end_tag_line)[end_tag_column-1:], mx)
       let end_tag_block = [end_tag_pos, [end_tag_pos[0], end_tag_pos[1] + len(end_tag_string) - 1]]
-
     endif
+
     if end_tag_pos == [0, 0]
       return
     endif
