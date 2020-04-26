@@ -974,7 +974,7 @@ function! emmet#lang#html#deleteSurroundingTags() abort
         let start_tag_pos = tag_pos
         break
       else
-        tag_count = tag_count + 1
+        let tag_count = tag_count + 1
         continue
       endif
     else
