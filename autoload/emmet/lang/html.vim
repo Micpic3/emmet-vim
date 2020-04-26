@@ -939,65 +939,65 @@ endfunction
 function! emmet#lang#html#deleteSurroundingTags() abort
   let curpos = emmet#util#getcurpos()
   let mx = '<\(/\{0,1}[a-zA-Z][-a-zA-Z0-9:_\-]*\)\%(\%(\s[a-zA-Z][a-zA-Z0-9]\+=\%([^"'' \t]\+\|"[^"]\{-}"\|''[^'']\{-}''\)\s*\)*\)\s*\%(/\{0,1}\)>'
-  while 1
-    let start_tag_block = []
-    let end_tag_block = []
 
-    let old_curpos = getpos('.')[1:2]
+  let start_tag_block = []
+  let end_tag_block = []
 
-    " This could either be the start or end tag. We aren't sure yet.
-    let tag_pos = searchpos(mx, 'bcnW')
-    let tag_line = tag_pos[0]
-    let tag_column = tag_pos[1]
+  let old_curpos = getpos('.')[1:2]
 
-    " This is the whole tag, like <p> or </div>
-    let tag_string = matchstr(getline(tag_line)[tag_column-1:], mx)
+  " This could either be the start or end tag. We aren't sure yet.
+  let tag_pos = searchpos(mx, 'bcnW')
+  let tag_line = tag_pos[0]
+  let tag_column = tag_pos[1]
 
-    " This is the tag name, like 'p' or 'div'
-    let tag_name = substitute(tag_string, '^<\(/\{0,1}[a-zA-Z][a-zA-Z0-9:_\-]*\).*$', '\1', '')
+  " This is the whole tag, like <p> or </div>
+  let tag_string = matchstr(getline(tag_line)[tag_column-1:], mx)
 
-    " [starting position, end position]
-    " [[1,1], [1,5]]
-    let tag_block = [tag_pos, [tag_line, tag_column + len(tag_string) - 1]]
+  " This is the tag name, like 'p' or 'div'
+  let tag_name = substitute(tag_string, '^<\(/\{0,1}[a-zA-Z][a-zA-Z0-9:_\-]*\).*$', '\1', '')
 
-    " We found a single tag ie. '<script />'.
-    if tag_string[-2:] ==# '/>'
-      return
-    endif
+  " [starting position, end position]
+  " [[1,1], [1,5]]
+  let tag_block = [tag_pos, [tag_line, tag_column + len(tag_string) - 1]]
 
-    " This tag is the end tag.  ie. '</div>'
-    if tag_name[0] ==# '/'
-      let end_tag_block = tag_block
-      let end_tag_name = tag_name
+  " We found a single tag ie. '<script />'.
+  if tag_string[-2:] ==# '/>'
+    return
+  endif
 
-      let start_tag_pos = searchpos('<' . end_tag_name[1:] . '[^a-zA-Z0-9]', 'bcnW')
-      let start_tag_line = start_tag_pos[0]
-      let start_tag_column = start_tag_pos[1]
-      let start_tag_string = matchstr(getline(start_tag_line)[start_tag_column-1:], mx)
-      let start_tag_block = [start_tag_pos, [start_tag_pos[0], start_tag_pos[1] + len(start_tag_string) - 1]]
+  " This tag is the end tag.  ie. '</div>'
+  if tag_name[0] ==# '/'
+    let end_tag_block = tag_block
+    let end_tag_name = tag_name
 
-    " We found the start tag.
-    else
-      let start_tag_block = tag_block
-      let start_tag_name = tag_name
+    let start_tag_pos = searchpos('<' . end_tag_name[1:] . '[^a-zA-Z0-9]', 'bcnW')
+    let start_tag_line = start_tag_pos[0]
+    let start_tag_column = start_tag_pos[1]
+    let start_tag_string = matchstr(getline(start_tag_line)[start_tag_column-1:], mx)
+    let start_tag_block = [start_tag_pos, [start_tag_pos[0], start_tag_pos[1] + len(start_tag_string) - 1]]
 
-      let end_tag_pos = searchpairpos('<'. start_tag_name . '[^/>]*>', '', '</' . start_tag_name . '>', 'W')
-      let end_tag_line = end_tag_pos[0]
-      let end_tag_column = end_tag_pos[1]
-      let end_tag_string = matchstr(getline(end_tag_line)[end_tag_column-1:], mx)
-      let end_tag_block = [end_tag_pos, [end_tag_pos[0], end_tag_pos[1] + len(end_tag_string) - 1]]
-    endif
+  " We found the start tag.
+  else
+    let start_tag_block = tag_block
+    let start_tag_name = tag_name
 
-    if end_tag_pos == [0, 0]
-      return
-    endif
+    let end_tag_pos = searchpairpos('<'. start_tag_name . '[^/>]*>', '', '</' . start_tag_name . '>', 'W')
+    let end_tag_line = end_tag_pos[0]
+    let end_tag_column = end_tag_pos[1]
+    let end_tag_string = matchstr(getline(end_tag_line)[end_tag_column-1:], mx)
+    let end_tag_block = [end_tag_pos, [end_tag_pos[0], end_tag_pos[1] + len(end_tag_string) - 1]]
+  endif
 
-    " Do the end tag first, because if we do the start tag first,
-    " it could change the spot of the end tag potentially, I think.
-    call emmet#util#setContent(end_tag_block, '')
-    call emmet#util#setContent(start_tag_block, '')
+  if end_tag_pos == [0, 0]
+    return
+  endif
 
-  endwhile
+  " Do the end tag first, because if we do the start tag first,
+  " it could change the spot of the end tag potentially, I think.
+  call emmet#util#setContent(end_tag_block, '')
+  call emmet#util#setContent(start_tag_block, '')
+
+  return
 endfunction
 
 function! emmet#lang#html#removeTag() abort
