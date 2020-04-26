@@ -135,6 +135,10 @@ function! s:install_plugin(mode, buffer)
   \ {'mode': 'i', 'var': 'user_emmet_mergelines_key', 'key': 'm', 'plug': 'emmet-merge-lines', 'func': '<c-r>=emmet#util#closePopup()<cr><c-r>=emmet#mergeLines()<cr>'},
   \ {'mode': 'n', 'var': 'user_emmet_mergelines_key', 'key': 'm', 'plug': 'emmet-merge-lines', 'func': ':call emmet#mergeLines()<cr>'},
   \ {'mode': 'v', 'var': 'user_emmet_codepretty_key', 'key': 'c', 'plug': 'emmet-code-pretty', 'func': ':call emmet#codePretty()<cr>'},
+  \ {'mode': 'i', 'var': 'user_emmet_deletesurroundingtags_key', 'key': 'l', 'plug': 'emmet-delete-surrounding-tags', 'func': '<esc>:call emmet#deleteSurroundingTags()<cr>'},
+  \ {'mode': 'n', 'var': 'user_emmet_deletesurroundingtags_key', 'key': 'l', 'plug': 'emmet-delete-surrounding-tags', 'func': ':call emmet#deleteSurroundingTags()<cr>'},
+  \ {'mode': 'i', 'var': 'user_emmet_deleteinnerhtml_key', 'key': 'h', 'plug': 'emmet-delete-inner-html', 'func': '<esc>:call emmet#deleteInnerHTML()<cr>'},
+  \ {'mode': 'n', 'var': 'user_emmet_deleteinnerhtml_key', 'key': 'h', 'plug': 'emmet-delete-inner-html', 'func': ':call emmet#deleteInnerHTML()<cr>'},
   \]
 
   let only_plug = get(g:, 'emmet_install_only_plug', 0)

@@ -371,13 +371,13 @@ endfunction
 
 function! emmet#getFileType(...) abort
   let flg = get(a:000, 0, 0)
-  
+
   if has_key(s:emmet_settings, &filetype)
     let type = &filetype
     if emmet#getResource(type, 'ignore_embeded_filetype', 0)
-      return type 
+      return type
     endif
-  endif 
+  endif
 
   let pos = emmet#util#getcurpos()
   let type = synIDattr(synID(max([pos[1], 1]), max([pos[2], 1]), 1), 'name')
@@ -833,6 +833,16 @@ endfunction
 function! emmet#splitJoinTag() abort
   let type = emmet#getFileType()
   return emmet#lang#{emmet#lang#type(type)}#splitJoinTag()
+endfunction
+
+function! emmet#deleteSurroundingTags() abort
+  let type = emmet#getFileType()
+  return emmet#lang#{emmet#lang#type(type)}#deleteSurroundingTags()
+endfunction
+
+function! emmet#deleteInnerHTML() abort
+  let type = emmet#getFileType()
+  return emmet#lang#{emmet#lang#type(type)}#deleteInnerHTML()
 endfunction
 
 function! emmet#mergeLines() range abort

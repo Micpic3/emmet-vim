@@ -149,7 +149,7 @@ function! emmet#lang#html#parseIntoTree(abbr, type) abort
         let tag_name = 'span'
       elseif len(custom) == 0
         let tag_name = 'div'
-      elseif len(custom) != 0 && multiplier > 1	
+      elseif len(custom) != 0 && multiplier > 1
         let tag_name = 'div'
       else
         let tag_name = custom
@@ -934,6 +934,40 @@ function! emmet#lang#html#splitJoinTag() abort
       return
     endif
   endwhile
+endfunction
+
+function! emmet#lang#html#deleteSurroundingTags() abort
+
+  let start_and_end_tag_blocks = emmet#util#getSurroundingTagBlocks()
+  let start_tag_block = start_and_end_tag_blocks[0]
+  let end_tag_block = start_and_end_tag_blocks[1]
+
+  if start_tag_block !=# [[0,0],[0,0]] && end_tag_block !=# [[0,0],[0,0]]
+    " Do the end tag first, because if we do the start tag first,
+    " it could change the spot of the end tag potentially, I think.
+    call emmet#util#setContent(end_tag_block, '')
+    call emmet#util#setContent(start_tag_block, '')
+  endif
+endfunction
+
+function! emmet#lang#html#deleteInnerHTML() abort
+
+  let start_and_end_tag_blocks = emmet#util#getSurroundingTagBlocks()
+  let start_tag_block = start_and_end_tag_blocks[0]
+  let end_tag_block = start_and_end_tag_blocks[1]
+
+  if start_tag_block !=# [[0,0],[0,0]] && end_tag_block !=# [[0,0],[0,0]]
+    let start_tag_line_end = start_tag_block[1][0]
+    let start_tag_column_end = start_tag_block[1][1]
+
+    let end_tag_line_start = end_tag_block[0][0]
+    let end_tag_column_start = end_tag_block[0][1]
+
+    let inner_html_block = [[start_tag_line_end, start_tag_column_end + 1], [end_tag_line_start, end_tag_column_start - 1]]
+    " Do the end tag first, because if we do the start tag first,
+    " it could change the spot of the end tag potentially, I think.
+    call emmet#util#setContent(inner_html_block, '')
+  endif
 endfunction
 
 function! emmet#lang#html#removeTag() abort
