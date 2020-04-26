@@ -943,8 +943,8 @@ function! emmet#lang#html#deleteSurroundingTags() abort
   let mx = '<\(/\{0,1}[a-zA-Z][-a-zA-Z0-9:_\-]*\)\%(\%(\s[a-zA-Z][a-zA-Z0-9]\+=\%([^"'' \t]\+\|"[^"]\{-}"\|''[^'']\{-}''\)\s*\)*\)\s*\%(/\{0,1}\)>'
 
   let original_curpos = emmet#util#getcurpos()
-  let original_curpos_line = original_curpos[0]
-  let original_curpos_column = original_curpos[1]
+  let original_curpos_line = original_curpos[1]
+  let original_curpos_column = original_curpos[2]
 
   let character_under_cursor = matchstr(getline('.'), '\%' . col('.') . 'c.')
   if character_under_cursor ==# "<"
